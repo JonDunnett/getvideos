@@ -1,10 +1,24 @@
 #!/bin/bash
+
+# 1) follow inital link to end
+# 2) pick out video url
+# 3) modify url from html to usable
+# 4) curl final url  chttps://stackoverflow.com/questions/13210880/replace-one-substring-for-another-string-in-shell-scripturl <url> -o $videoname.mp4
+
 filename="$1";
 foldername="$2";
-mkdir "$foldername";
+if [ ! -d "$foldername" ]; then
+  mkdir "$foldername";
+fi
+
+# video url regex mediaus.dartfish.com%5C%2F[a-zA-Z0-9_]*%5C%2F[a-zA-Z0-9]*.mp4
+# %5C is a \
+# %2F is a /
+
 let "i=0";
+# read file
 while read -r line; do
-	if [[ $line != "" && $i -eq 1 ]];
+	if [[ $line != "" && $i -eq 1 && ! -d $videoname.mp4 ]];
 	then let "i=0"; $(curl --cookie cookies.txt -L $line > .tmp); url="https://$(grep -o -m 1 "mediaus.dartfish.com%5C%2F[a-zA-Z0-9_]*%5C%2F[a-zA-Z0-9]*.mp4" .tmp | head -1)";
 	url="${url//%5C%2F//}"; curl --cookie cookies.txt $url -o $videoname.mp4; mv "$videoname.mp4" "$foldername/";
 elif [[ $line != "" && $i -eq 0 ]];
@@ -12,12 +26,7 @@ elif [[ $line != "" && $i -eq 0 ]];
 	fi
 done < "$filename"
 
-# video url regex mediaus.dartfish.com%5C%2F[a-zA-Z0-9_]*%5C%2F[a-zA-Z0-9]*.mp4
+rm .tmp
 
-# %5C is a \
-# %2F is a /
 
-# 1) follow inital link to end
-# 2) pick out video url
-# 3) modify url from html to usable
-# 4) curl final url  chttps://stackoverflow.com/questions/13210880/replace-one-substring-for-another-string-in-shell-scripturl <url> -o $videoname.mp4
+# getvids [filename] [foldername]
