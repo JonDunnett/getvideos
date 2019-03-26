@@ -3,7 +3,7 @@
 # 1) follow inital link to end
 # 2) pick out video url
 # 3) modify url from html to usable
-# 4) curl final url  chttps://stackoverflow.com/questions/13210880/replace-one-substring-for-another-string-in-shell-scripturl <url> -o $videoname.mp4
+# 4) curl final url <url> -o $videoname.mp4
 
 filename="$1";
 foldername="$2";
